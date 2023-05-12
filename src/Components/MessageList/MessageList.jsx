@@ -14,8 +14,6 @@ export const MessageList = () => {
   }
 
   const sendMessage = () => {
-    //   setMessage(inputRef.current.value);
-
     const message = createMessage(
       "Alex",
       inputRef.current.value,
@@ -25,16 +23,10 @@ export const MessageList = () => {
 
     inputRef.current.value = "";
     console.log(inputRef.current.value);
-    // botSendMessage();
   };
 
   useEffect(() => {
     const botSendMessage = () => {
-      // const newMessage = {
-      //   id: messageList.length + 1,
-      //   text: payload,
-      //   author: author,
-      // };
       const newMessage = createMessage(
         "Bot",
         "Hello, I'm your personal slave",
