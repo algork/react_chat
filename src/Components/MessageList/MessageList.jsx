@@ -19,6 +19,8 @@ export const MessageList = () => {
       inputRef.current.value,
       messageList.length + 1
     );
+    console.log("SEND MESSAGE - MESSAGE LIST", messageList);
+    console.log("SEND MESSAGE - MESSAGE", message);
     setMessageList([...messageList, message]);
 
     inputRef.current.value = "";
@@ -27,13 +29,14 @@ export const MessageList = () => {
 
   useEffect(() => {
     const botSendMessage = () => {
-      const newMessage = createMessage(
+      const botMessage = createMessage(
         "Bot",
         "Hello, I'm your personal slave",
         messageList.length + 1
       );
-      console.log(messageList);
-      setMessageList([...messageList, newMessage]);
+      console.log("BOTSEND MESSAGE - MESSAGE LIST", messageList);
+      console.log("BOTSEND MESSAGE - MESSAGE", botMessage);
+      setMessageList([...messageList, botMessage]);
     };
 
     const timer = setTimeout(() => {
