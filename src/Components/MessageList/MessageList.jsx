@@ -54,12 +54,12 @@ export const MessageList = () => {
   }, [messageList]);
 
   return (
-    <div className="form-wrapper">
-      <div className="form-text-field">
+    <div className="chat-wrapper">
+      <div className="chat-field">
         {messageList.map((msg) => (
           <div className="message-div" key={msg.id}>
             <div
-              className="avatar-div"
+              className="avatar-wrapper"
               style={{
                 flexDirection: msg.author === "Alex" ? "row-reverse" : "row",
                 justifyContent: msg.author === "Alex" ? "flex-start" : null,
