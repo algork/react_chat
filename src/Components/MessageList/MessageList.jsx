@@ -62,7 +62,6 @@ export const MessageList = () => {
               className="avatar-wrapper"
               style={{
                 flexDirection: msg.author === "Alex" ? "row-reverse" : "row",
-                justifyContent: msg.author === "Alex" ? "flex-start" : null,
               }}
             >
               <div>
