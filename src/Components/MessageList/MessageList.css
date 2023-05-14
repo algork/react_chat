@@ -1,0 +1,43 @@
+.form-wrapper {
+  width: 350px;
+  /* height: 100%; */
+  border: 1px solid #ccc;
+  color: black;
+  margin: 20px;
+}
+
+.form-text-field {
+  background-color: #ccc;
+  padding: 10px;
+}
+
+.message-div {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  padding: 8px;
+}
+
+.avatar-div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 46px;
+  padding: 4px;
+}
+
+.input-div {
+  margin: 20px;
+}
+
+.author-text-font {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.message-font {
+  font-size: 20px;
+}

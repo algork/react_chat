@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from "react";
+import "./MessageList.css";
 
 export const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
   const inputRef = useRef(null);
   //   const [message, setMessage] = useState("");
 
-  function createMessage(author, message, id) {
+  function createMessage(image, author, message, id) {
     return {
       id: id,
       text: message,
       author: author,
+      image: image,
     };
   }
 
   const sendMessage = () => {
     const message = createMessage(
+      "./avatar-user.png",
       "Alex",
       inputRef.current.value,
       messageList.length + 1
@@ -30,6 +33,7 @@ export const MessageList = () => {
   useEffect(() => {
     const botSendMessage = () => {
       const botMessage = createMessage(
+        "./avatar-bot.png",
         "Bot",
         "Hello, I'm your personal slave",
         messageList.length + 1
@@ -50,17 +54,30 @@ export const MessageList = () => {
   }, [messageList]);
 
   return (
-    <div>
-      <div>
+    <div className="form-wrapper">
+      <div className="form-text-field">
         {messageList.map((msg) => (
-          <div key={msg.id}>
-            <div>{msg.author}</div>
-            <div>{msg.text}</div>
+          <div className="message-div" key={msg.id}>
+            <div
+              className="avatar-div"
+              style={{
+                flexDirection: msg.author === "Alex" ? "row-reverse" : "row",
+                justifyContent: msg.author === "Alex" ? "flex-start" : null,
+              }}
+            >
+              <div>
+                <img className="avatar" src={msg.image} alt="avatar" />
+              </div>
+              <div className="author-text-font">{msg.author}</div>
+            </div>
+            <div className="message-font">{msg.text}</div>
           </div>
         ))}
       </div>
-      <input ref={inputRef} />
-      <button onClick={() => sendMessage()}>SEND</button>
+      <div className="input-div">
+        <input ref={inputRef} />
+        <button onClick={() => sendMessage()}>SEND</button>
+      </div>
     </div>
   );
 };
