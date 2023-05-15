@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import IconButton from "@mui/material/IconButton";
+import SendIcon from "@mui/icons-material/Send";
+
 import "./MessageList.css";
 
 export const MessageList = () => {
@@ -75,7 +78,15 @@ export const MessageList = () => {
       </div>
       <div className="input-div">
         <input ref={inputRef} />
-        <button onClick={() => sendMessage()}>SEND</button>
+        <IconButton
+          onClick={() => sendMessage()}
+          color="primary"
+          aria-label="send"
+          size="small"
+          disableRipple
+        >
+          <SendIcon />
+        </IconButton>
       </div>
     </div>
   );
