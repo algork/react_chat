@@ -11,11 +11,21 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import InboxIcon from "@mui/icons-material/Inbox";
 
 import "./MessageList.css";
+import { ChatList } from "../ChatList/ChatList";
+import { Troubleshoot } from "@mui/icons-material";
 
 export const MessageList = () => {
   const [messageList, setMessageList] = useState([]);
+  const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
-  //   const [message, setMessage] = useState("");
+  const chatContainerRef = useRef(null);
+
+  const isInputEmpty = inputValue.trim() === "";
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setInputValue("");
+  };
 
   function createMessage(image, author, message, id) {
     return {
@@ -38,10 +48,22 @@ export const MessageList = () => {
     setMessageList([...messageList, message]);
 
     inputRef.current.value = "";
+    inputRef.current?.focus();
     console.log(inputRef.current.value);
   };
 
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  };
+
   useEffect(() => {
+    inputRef.current?.focus();
+
+    scrollToBottom();
+
     const botSendMessage = () => {
       const botMessage = createMessage(
         "./avatar-bot.png",
@@ -65,54 +87,64 @@ export const MessageList = () => {
   }, [messageList]);
 
   return (
-    <div className="chat-window">
-      <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Drafts" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Box>
+    <div className="container">
+      <ChatList />
       <div className="chat-wrapper">
-        <div className="chat-field">
+        <div className="chat-field" ref={chatContainerRef}>
           {messageList.map((msg) => (
-            <div className="message-div" key={msg.id}>
+            <div
+              className="message-container"
+              style={{
+                justifyContent: msg.author === "Bot" ? "flex-end" : "flex-end",
+                flexDirection: msg.author === "Bot" ? "row-reverse" : "row",
+              }}
+              key={msg.id}
+            >
               <div
-                className="avatar-wrapper"
+                className="message-div"
                 style={{
-                  flexDirection: msg.author === "Alex" ? "row-reverse" : "row",
+                  backgroundColor:
+                    msg.author === "Alex" ? "#e3fdd6" : "#fbffff",
                 }}
               >
-                <div>
-                  <img className="avatar" src={msg.image} alt="avatar" />
+                <div
+                  className="author-text-font"
+                  style={{
+                    color: msg.author === "Bot" ? "#6658df" : null,
+                    display: msg.author === "Alex" ? "none" : "block",
+                    justifyContent:
+                      msg.author === "Bot" ? "flex-start" : "flex-end",
+                  }}
+                >
+                  {msg.author}
                 </div>
-                <div className="author-text-font">{msg.author}</div>
+                <div className="message-font">{msg.text}</div>
               </div>
-              <div className="message-font">{msg.text}</div>
+              <div>
+                <img className="avatar" src={msg.image} alt="avatar" />
+              </div>
             </div>
           ))}
         </div>
         <div className="input-div">
-          <form>
-            <input className="input" ref={inputRef} />
+          <form
+            className="chat-form"
+            onSubmit={handleSubmit}
+            onChange={(event) => setInputValue(event.target.value)}
+          >
+            <input className="input" placeholder="Message" ref={inputRef} />
             <IconButton
+              className="button"
               onClick={() => sendMessage()}
               color="primary"
               aria-label="send"
               size="large"
+              type="submit"
+              disableRipple
+              disabled={isInputEmpty}
+              sx={{
+                backgroundColor: "white",
+              }}
             >
               <SendIcon />
             </IconButton>
