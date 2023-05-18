@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-
-import IconButton from "@mui/material/IconButton";
-import SendIcon from "@mui/icons-material/Send";
-
 import "./MessageList.css";
 import { ChatList } from "../ChatList/ChatList";
+import { MessageForm } from "../MessageForm/MessageForm";
 
 export function MessageList() {
   const [messageList, setMessageList] = useState([]);
@@ -118,30 +115,13 @@ export function MessageList() {
             </div>
           ))}
         </div>
-        <div className="input-div">
-          <form
-            className="chat-form"
-            onSubmit={handleSubmit}
-            onChange={(event) => setInputValue(event.target.value)}
-          >
-            <input className="input" placeholder="Message" ref={inputRef} />
-            <IconButton
-              className="button"
-              onClick={() => sendMessage()}
-              color="primary"
-              aria-label="send"
-              size="large"
-              type="submit"
-              disableRipple
-              disabled={isInputEmpty}
-              sx={{
-                backgroundColor: "white",
-              }}
-            >
-              <SendIcon />
-            </IconButton>
-          </form>
-        </div>
+        <MessageForm
+          onSubmit={handleSubmit}
+          onChange={(event) => setInputValue(event.target.value)}
+          inputRef={inputRef}
+          isInputEmpty={isInputEmpty}
+          onSendMessage={sendMessage}
+        />
       </div>
     </div>
   );
