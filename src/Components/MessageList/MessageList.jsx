@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import "./MessageList.css";
 import { ChatList } from "../ChatList/ChatList";
 
-export const MessageList = () => {
+export function MessageList() {
   const [messageList, setMessageList] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
@@ -145,4 +145,4 @@ export const MessageList = () => {
       </div>
     </div>
   );
-};
+}

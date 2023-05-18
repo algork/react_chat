@@ -8,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 
 import Avatar from "@mui/material/Avatar";
 
-export const ChatList = () => {
+export function ChatList() {
   const [chatList] = useState([
     { name: "Chat-1", id: 1, image: "./lolo.jpg" },
     { name: "OLLOLO2", id: 2, image: "./lolo.jpg" },
@@ -34,4 +34,4 @@ export const ChatList = () => {
       </List>
     </Box>
   );
-};
+}
