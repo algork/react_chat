@@ -1,18 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
-import ListItemText from "@mui/material/ListItemText";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import InboxIcon from "@mui/icons-material/Inbox";
 
 import "./MessageList.css";
 import { ChatList } from "../ChatList/ChatList";
-import { Troubleshoot } from "@mui/icons-material";
 
 export const MessageList = () => {
   const [messageList, setMessageList] = useState([]);

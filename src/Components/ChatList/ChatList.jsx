@@ -7,10 +7,9 @@ import Stack from "@mui/material/Stack";
 import ListItemText from "@mui/material/ListItemText";
 
 import Avatar from "@mui/material/Avatar";
-import ImageIcon from "@mui/icons-material/Image";
 
 export const ChatList = () => {
-  const [chatList, setChatList] = useState([
+  const [chatList] = useState([
     { name: "Chat-1", id: 1, image: "./lolo.jpg" },
     { name: "OLLOLO2", id: 2, image: "./lolo.jpg" },
     { name: "Sorry MAAAAM", id: 3, image: "./lolo.jpg" },
