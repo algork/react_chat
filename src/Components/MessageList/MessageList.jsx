@@ -26,15 +26,15 @@ export function MessageList() {
   }
 
   const sendMessage = () => {
-    const message = createMessage(
+    const userMessage = createMessage(
       "./avatar-user.png",
       "Alex",
       inputRef.current.value,
       messageList.length + 1
     );
     console.log("SEND MESSAGE - MESSAGE LIST", messageList);
-    console.log("SEND MESSAGE - MESSAGE", message);
-    setMessageList([...messageList, message]);
+    console.log("SEND MESSAGE - MESSAGE", userMessage);
+    setMessageList([...messageList, userMessage]);
 
     inputRef.current.value = "";
     inputRef.current?.focus();
@@ -78,6 +78,7 @@ export function MessageList() {
   return (
     <div className="container">
       <ChatList />
+
       <div className="chat-wrapper">
         <div className="chat-field" ref={chatContainerRef}>
           {messageList.map((msg) => (

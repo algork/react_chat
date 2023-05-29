@@ -9,15 +9,15 @@ import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 
 export function ChatList() {
-  const [chatList] = useState([
+  const initialChats = [
     { name: "Chat-1", id: 1, image: "./lolo.jpg" },
     { name: "OLLOLO2", id: 2, image: "./lolo.jpg" },
     { name: "Sorry MAAAAM", id: 3, image: "./lolo.jpg" },
-  ]);
+  ];
   return (
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       <List>
-        {chatList.map((msg) => (
+        {initialChats.map((msg) => (
           <ListItem disablePadding key={msg.id}>
             <ListItemButton>
               <Stack direction="row" spacing={2}>
