@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import "./MessageList.css";
-import { ChatList } from "../ChatList/ChatList";
 import { MessageForm } from "../MessageForm/MessageForm";
+import { useParams } from "react-router-dom";
 
 export function MessageList() {
-  const [messageList, setMessageList] = useState([]);
+  const { chatId } = useParams();
+  const [messageList, setMessageList] = useState({});
+
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -16,25 +18,27 @@ export function MessageList() {
     setInputValue("");
   };
 
-  function createMessage(image, author, message, id) {
+  function createMessage(author, message, id) {
     return {
       id: id,
       text: message,
       author: author,
-      image: image,
     };
   }
 
   const sendMessage = () => {
     const userMessage = createMessage(
-      "./avatar-user.png",
       "Alex",
       inputRef.current.value,
-      messageList.length + 1
+      messageList[chatId].length + 1
     );
     console.log("SEND MESSAGE - MESSAGE LIST", messageList);
     console.log("SEND MESSAGE - MESSAGE", userMessage);
-    setMessageList([...messageList, userMessage]);
+
+    setMessageList((prevmessageList) => ({
+      ...prevmessageList,
+      [chatId]: [...prevmessageList[chatId], userMessage],
+    }));
 
     inputRef.current.value = "";
     inputRef.current?.focus();
@@ -52,78 +56,58 @@ export function MessageList() {
     inputRef.current?.focus();
 
     scrollToBottom();
-
-    const botSendMessage = () => {
-      const botMessage = createMessage(
-        "./avatar-bot.png",
-        "Bot",
-        "Hello, I'm your personal slave",
-        messageList.length + 1
-      );
-      console.log("BOTSEND MESSAGE - MESSAGE LIST", messageList);
-      console.log("BOTSEND MESSAGE - MESSAGE", botMessage);
-      setMessageList([...messageList, botMessage]);
-    };
-
-    const timer = setTimeout(() => {
-      const lastMessage =
-        messageList.length !== 0 ? messageList[messageList.length - 1] : null;
-      if (lastMessage && lastMessage.author !== "Bot") {
-        botSendMessage();
-      }
-    }, 1500);
-    return () => clearTimeout(timer);
   }, [messageList]);
 
-  return (
-    <div className="container">
-      <ChatList />
+  useEffect(() => {
+    if (!messageList[chatId]) {
+      setMessageList((prevmessageList) => ({
+        ...prevmessageList,
+        [chatId]: [],
+      }));
+    }
+  }, [messageList, chatId]);
 
-      <div className="chat-wrapper">
-        <div className="chat-field" ref={chatContainerRef}>
-          {messageList.map((msg) => (
+  return (
+    <div className="chat-wrapper">
+      <div className="chat-field" ref={chatContainerRef}>
+        {messageList[chatId]?.map((msg) => (
+          <div
+            className="message-container"
+            style={{
+              justifyContent: msg.author !== "Alex" ? "flex-end" : "flex-end",
+              flexDirection: msg.author !== "Alex" ? "row-reverse" : "row",
+            }}
+            key={msg.id}
+          >
             <div
-              className="message-container"
+              className="message-div"
               style={{
-                justifyContent: msg.author === "Bot" ? "flex-end" : "flex-end",
-                flexDirection: msg.author === "Bot" ? "row-reverse" : "row",
+                backgroundColor: msg.author === "Alex" ? "#e3fdd6" : "#fbffff",
               }}
-              key={msg.id}
             >
               <div
-                className="message-div"
+                className="author-text-font"
                 style={{
-                  backgroundColor:
-                    msg.author === "Alex" ? "#e3fdd6" : "#fbffff",
+                  color: msg.author !== "Alex" ? "#6658df" : null,
+                  display: msg.author !== "Alex" ? "none" : "block",
+                  justifyContent:
+                    msg.author !== "Alex" ? "flex-start" : "flex-end",
                 }}
               >
-                <div
-                  className="author-text-font"
-                  style={{
-                    color: msg.author === "Bot" ? "#6658df" : null,
-                    display: msg.author === "Alex" ? "none" : "block",
-                    justifyContent:
-                      msg.author === "Bot" ? "flex-start" : "flex-end",
-                  }}
-                >
-                  {msg.author}
-                </div>
-                <div className="message-font">{msg.text}</div>
+                {msg.author}
               </div>
-              <div>
-                <img className="avatar" src={msg.image} alt="avatar" />
-              </div>
+              <div className="message-font">{msg.text}</div>
             </div>
-          ))}
-        </div>
-        <MessageForm
-          onSubmit={handleSubmit}
-          onChange={(event) => setInputValue(event.target.value)}
-          inputRef={inputRef}
-          isInputEmpty={isInputEmpty}
-          onSendMessage={sendMessage}
-        />
+          </div>
+        ))}
       </div>
+      <MessageForm
+        onSubmit={handleSubmit}
+        onChange={(event) => setInputValue(event.target.value)}
+        inputRef={inputRef}
+        isInputEmpty={isInputEmpty}
+        onSendMessage={sendMessage}
+      />
     </div>
   );
 }

@@ -1,12 +1,16 @@
 import "./App.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Routers } from "./Router/Routers";
+import { Provider } from "react-redux";
+import { store } from "./Store";
 
-import { MessageList } from "./Components/MessageList/MessageList";
-
-function App({ name, text }) {
+function App() {
   return (
-    <div>
-      <MessageList />
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Routers />
+      </Router>
+    </Provider>
   );
 }
 export default App;
