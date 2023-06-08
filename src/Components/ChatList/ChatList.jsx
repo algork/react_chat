@@ -4,90 +4,114 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Stack from "@mui/material/Stack";
 import ListItemText from "@mui/material/ListItemText";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Avatar from "@mui/material/Avatar";
-import { useRef, useState } from "react";
-import { Profile } from "../../Screens/Profile/Profile";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteChatAction } from "../../Store/Chats/actions";
+import { chatsSelector } from "../../Store/Chats/selectors";
+import { AddChatModal } from "../AddChatModal/AddChatModal";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Button, IconButton } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { DeleteChatModal } from "../DeleteChatModal/DeleteChatModal";
 
-export const initialChats = [
-  { name: "Chat-1", id: 1, image: "./lolo.jpg", messageList: [] },
-  { name: "OLLOLO2", id: 2, image: "./lolo.jpg", messageList: [] },
-  { name: "Sorry MAAAAM", id: 3, image: "./lolo.jpg", messageList: [] },
-  { name: "HELLO ALO", id: 4, image: "./lolo.jpg", messageList: [] },
-];
 export function ChatList() {
-  const [chats, setChats] = useState(initialChats);
-  const [activeChatId, setActiveChatId] = useState(null);
-  const inputRef = useRef();
+  const { chatId } = useParams();
+  const [activeChatId, setActiveChatId] = useState(chatId); //setting chatId as initial state for activeChatId so it makes chat highlighted on the first click on first render from Home page. otherwise it was undefined, since useState was set to (null)
+  // const [contextMenu, setContextMenu] = useState(false);
+  const dispatch = useDispatch();
+  const chats = useSelector(chatsSelector);
+  const navigate = useNavigate();
 
-  const handleChatSelect = (chatId) => {
-    console.log(chatId);
-    setActiveChatId(chatId);
+  // const handleContextMenu = (e) => {
+  //   e.preventDefault();
+  //   setContextMenu((current) => !current);
+  // };
+
+  const handleChatSelect = (selectedChatId) => {
+    setActiveChatId(selectedChatId);
   };
 
-  const handleChatDelete = (chatId) => {
-    const updatedChats = chats.filter((chat) => chat.id !== chatId);
-    setChats(updatedChats);
-    if (activeChatId === chatId) {
-      setActiveChatId(null);
+  // const handleChatSelect = (selcetedChatId) => {
+  //   console.log("CHATS::SELECTED_CHAT_ID", selcetedChatId);
+  //   console.log("CHATS::CHAT_ID_FROM_PARAMS", chatId);
+  //   setActiveChatId(selcetedChatId);
+  // };
+
+  // const handleChatDelete = (chatId) => {
+  //   // const updatedChats = chats.filter((chat) => chat.id !== chatId);
+  //   // setChats(updatedChats);
+  //   dispatch(deleteChatAction(chatId));
+  // };
+
+  // function createChat(name) {
+  //   // console.log(params);
+  //   return {
+  //     id: chats.length + 1,
+  //     name: name,
+  //     image: "./lolo.jpg",
+  //     messageList: [],
+  //   };
+  // }
+
+  useEffect(() => {
+    if (chatId && !chats.some((chat) => chat.id === chatId)) {
+      navigate("/");
     }
-  };
-
-  function createChat(name) {
-    // console.log(params);
-    return {
-      id: chats.length + 1,
-      name: name,
-      image: "./lolo.jpg",
-      messageList: [],
-    };
-  }
-
-  const handleChatAdd = () => {
-    const newChat = createChat(inputRef.current.value);
-    setChats([...chats, newChat]);
-    inputRef.current.value = "";
-  };
+  }, [chatId, chats, navigate]);
 
   return (
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      {/* <h1>Name selector from Profile {userName}</h1> */}
       <List>
         {chats.map((chat) => (
           <ListItem key={chat.id} disablePadding>
-            <Link to={"/chats/" + chat.id}>
+            <Link
+              to={"/chats/" + chat.id}
+              style={{ textDecoration: "none", color: "black", width: "100%" }}
+            >
               <ListItemButton
                 selected={activeChatId === chat.id}
                 onClick={() => handleChatSelect(chat.id)}
+                // onContextMenu={handleContextMenu}
               >
                 <Stack direction="row" spacing={2}>
                   <Avatar
                     alt={chat.name}
-                    src={chat.image}
+                    // src={chat.image}
                     sx={{ marginRight: 2 }}
-                  ></Avatar>
+                  >
+                    {chat.name[0]}
+                  </Avatar>
                 </Stack>
                 <ListItemText primary={chat.name} />
+                <DeleteChatModal color="error" />
+                {/* <IconButton
+                  color="error"
+                  onClick={() => handleChatDelete(chat.id)}
+                >
+                  <DeleteForeverIcon color="error" />
+                </IconButton> */}
               </ListItemButton>
             </Link>
-            <button
-              style={{ paddingRight: "15px" }}
-              onClick={() => handleChatDelete(chat.id)}
-            >
-              x
-            </button>
           </ListItem>
         ))}
       </List>
-      <div className="addChat">
-        <input ref={inputRef} placeholder="add chat" />
-        <button onClick={handleChatAdd}>Add chat</button>
-      </div>
-      <Link to="/profile">
-        <div>
-          <button>Profile page</button>
+
+      <div>
+        <div className="profile-button">
+          <Link to="/profile">
+            <Button>
+              <AccountCircleIcon fontSize="large" style={{ color: "green" }} />
+            </Button>
+          </Link>
         </div>
-      </Link>
+        <div className="add-chat-button">
+          <AddChatModal />
+        </div>
+      </div>
     </Box>
   );
 }

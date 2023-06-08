@@ -1,0 +1,18 @@
+.add-chat-modal-form-container {
+}
+
+.input-add-chat-modal {
+  width: 100%;
+  line-height: 35px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid grey;
+  padding-left: 10px;
+}
+
+.add-chat-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}

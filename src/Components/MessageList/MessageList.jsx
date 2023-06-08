@@ -2,15 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import "./MessageList.css";
 import { MessageForm } from "../MessageForm/MessageForm";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { messageListSelector } from "../../Store/Messages/selectors";
+import { addMessageAction } from "../../Store/Messages/actions";
+import { profileSelector } from "../../Store/Profile/selectors";
+import { v4 as uuidv4 } from "uuid";
 
 export function MessageList() {
   const { chatId } = useParams();
-  const [messageList, setMessageList] = useState({});
+  const messageList = useSelector(messageListSelector);
+  // const chatId  = useSelector(currentChatMessagesSelector).chatId;
+  // const [messageList, setMessageList] = useState({});
+  const name = useSelector(profileSelector).name;
 
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
-
+  const disptach = useDispatch();
   const isInputEmpty = inputValue.trim() === "";
 
   const handleSubmit = (event) => {
@@ -18,32 +26,45 @@ export function MessageList() {
     setInputValue("");
   };
 
-  function createMessage(author, message, id) {
-    return {
-      id: id,
-      text: message,
-      author: author,
-    };
-  }
+  // function createMessage(author, message, id) {
+  //   return {
+  //     id: id,
+  //     message: message,
+  //     author: author,
+  //   };
+  // }
 
   const sendMessage = () => {
-    const userMessage = createMessage(
-      "Alex",
-      inputRef.current.value,
-      messageList[chatId].length + 1
+    disptach(
+      addMessageAction(chatId, {
+        id: uuidv4(),
+        author: name,
+        message: inputRef.current.value,
+      })
     );
-    console.log("SEND MESSAGE - MESSAGE LIST", messageList);
-    console.log("SEND MESSAGE - MESSAGE", userMessage);
-
-    setMessageList((prevmessageList) => ({
-      ...prevmessageList,
-      [chatId]: [...prevmessageList[chatId], userMessage],
-    }));
-
     inputRef.current.value = "";
     inputRef.current?.focus();
-    console.log(inputRef.current.value);
+    console.log("MESSAGELIST::CHAT_ID", chatId);
   };
+
+  // const sendMessage = () => {
+  //   const userMessage = createMessage(
+  //     "Alex",
+  //     inputRef.current.value,
+  //     messageList[chatId].length + 1
+  //   );
+  //   console.log("SEND MESSAGE - MESSAGE LIST", messageList);
+  //   console.log("SEND MESSAGE - MESSAGE", userMessage);
+
+  //   setMessageList((prevmessageList) => ({
+  //     ...prevmessageList,
+  //     [chatId]: [...prevmessageList[chatId], userMessage],
+  //   }));
+
+  //   inputRef.current.value = "";
+  //   inputRef.current?.focus();
+  //   console.log(inputRef.current.value);
+  // };
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -54,18 +75,17 @@ export function MessageList() {
 
   useEffect(() => {
     inputRef.current?.focus();
-
     scrollToBottom();
-  }, [messageList]);
-
-  useEffect(() => {
-    if (!messageList[chatId]) {
-      setMessageList((prevmessageList) => ({
-        ...prevmessageList,
-        [chatId]: [],
-      }));
-    }
   }, [messageList, chatId]);
+
+  // useEffect(() => {
+  //   if (!messageList[chatId]) {
+  //     setMessageList((prevmessageList) => ({
+  //       ...prevmessageList,
+  //       [chatId]: [],
+  //     }));
+  //   }
+  // }, [messageList, chatId]);
 
   return (
     <div className="chat-wrapper">
@@ -96,7 +116,7 @@ export function MessageList() {
               >
                 {msg.author}
               </div>
-              <div className="message-font">{msg.text}</div>
+              <div className="message-font">{msg.message}</div>
             </div>
           </div>
         ))}
