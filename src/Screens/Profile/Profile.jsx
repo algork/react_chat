@@ -5,6 +5,7 @@ import {
   toggleUserNameAction,
 } from "../../Store/Profile/actions";
 import { profileSelector } from "../../Store/Profile/selectors";
+import { addMessageWithThunk } from "../../Store/Messages/actions";
 
 export function Profile() {
   const dispatch = useDispatch();
@@ -12,6 +13,14 @@ export function Profile() {
 
   const handeToggleShowName = () => {
     dispatch(toggleUserNameAction());
+    // dispatch(
+    //   addMessageWithThunk({
+    //     chatId: "id1",
+    //     message: "some text",
+    //     author: "Alex",
+    //   })
+    // );
+
     // dispatch(addChatAction({ name: name }));
   };
 

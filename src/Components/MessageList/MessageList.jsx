@@ -4,7 +4,10 @@ import { MessageForm } from "../MessageForm/MessageForm";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { messageListSelector } from "../../Store/Messages/selectors";
-import { addMessageAction } from "../../Store/Messages/actions";
+import {
+  addMessageAction,
+  addMessageWithThunk,
+} from "../../Store/Messages/actions";
 import { profileSelector } from "../../Store/Profile/selectors";
 import { v4 as uuidv4 } from "uuid";
 
@@ -47,6 +50,20 @@ export function MessageList() {
     console.log("MESSAGELIST::CHAT_ID", chatId);
   };
 
+  // With BOT Message
+  // const sendMessage = () => {
+  //   disptach(
+  //     addMessageWithThunk(chatId, {
+  //       id: uuidv4(),
+  //       author: name,
+  //       message: inputRef.current.value,
+  //     })
+  //   );
+
+  //   inputRef.current.value = "";
+  //   inputRef.current?.focus();
+  // };
+
   // const sendMessage = () => {
   //   const userMessage = createMessage(
   //     "Alex",
@@ -74,7 +91,9 @@ export function MessageList() {
   };
 
   useEffect(() => {
+    inputRef.current.value = "";
     inputRef.current?.focus();
+
     scrollToBottom();
   }, [messageList, chatId]);
 

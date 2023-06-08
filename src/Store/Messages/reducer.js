@@ -11,7 +11,7 @@ export const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_MESSAGE_ACTION:
       const { chatId, ...rest } = action.payload;
-      console.log("REDUCER::CHAT_ID", action.payload.chatId);
+      // console.log("REDUCER::CHAT_ID", action.payload.chatId);
       const chatMessages = state.messageList[chatId] ?? [];
       return {
         ...state,
