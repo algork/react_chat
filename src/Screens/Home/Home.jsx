@@ -7,7 +7,6 @@ export function Home() {
       <ChatList />
       <div className="chat-wrapper ">
         <div className="no-chat-selected">Please select a chat</div>
-        <p>To be fixed: 1. Delete chat on right click contextmenu</p>
       </div>
     </div>
   );

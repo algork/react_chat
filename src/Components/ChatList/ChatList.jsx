@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteChatAction } from "../../Store/Chats/actions";
 import { chatsSelector } from "../../Store/Chats/selectors";
 import { AddChatModal } from "../AddChatModal/AddChatModal";
+import HelpIcon from "@mui/icons-material/Help";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Button, IconButton } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -111,6 +112,13 @@ export function ChatList() {
         <div className="add-chat-button">
           <AddChatModal />
         </div>
+      </div>
+      <div>
+        <Link to="/facts">
+          <Button>
+            <HelpIcon fontSize="large" style={{ color: "red" }} />
+          </Button>
+        </Link>
       </div>
     </Box>
   );

@@ -38,11 +38,33 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  max-width: 50%;
   overflow-wrap: break-word;
 }
 
 .avatar {
   width: 32px;
   padding: 4px;
+}
+
+.author-text-font {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.message-text-container {
+  display: flex;
+  gap: 15px;
+}
+
+.message-font {
+  font-size: 20px;
+}
+
+.time-font {
+  font-size: 16px;
+  color: darkgrey;
+  align-self: flex-end;
 }

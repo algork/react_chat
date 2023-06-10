@@ -26,14 +26,3 @@
 .input:focus {
   outline: none;
 }
-
-.author-text-font {
-  font-size: 18px;
-  font-weight: 600;
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.message-font {
-  font-size: 20px;
-}

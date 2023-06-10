@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { addChatAction } from "../../Store/Chats/actions";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useEffect } from "react";
+import { useState } from "react";
 
 const style = {
   position: "absolute",
@@ -24,13 +25,23 @@ const style = {
 
 export function AddChatModal() {
   const [open, setOpen] = React.useState(false);
-
-  //   const handleClose = () => setOpen(false);
   const inputChatRef = React.useRef();
+  const [inputChatValue, setInputChatValue] = useState("");
   const dispatch = useDispatch();
+  const isInputChatEmpty = inputChatValue.trim() === "";
 
   const handleOpen = () => {
     setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleChatAdd();
+    setInputChatValue("");
   };
 
   useEffect(() => {
@@ -45,10 +56,8 @@ export function AddChatModal() {
     // const newChat = createChat(inputRef.current.value);
     // setChats([...chats, newChat]);
     dispatch(addChatAction({ name: inputChatRef.current.value }));
-    setOpen(false);
+    handleClose();
   };
-
-  const handleClose = () => setOpen(false);
 
   return (
     <div>
@@ -57,6 +66,7 @@ export function AddChatModal() {
       </Button>
       <Modal
         open={open}
+        // onClose={handleClose}
         // onRendered={() => inputChatRef.current?.focus()}
         // onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -67,10 +77,11 @@ export function AddChatModal() {
             Add new chat name
           </Typography>
           <div className="add-chat-modal-form-container">
-            <form className="form-add-chat-modal">
+            <form className="form-add-chat-modal" onSubmit={handleSubmit}>
               <input
                 placeholder="new chat name"
                 className="input-add-chat-modal"
+                onChange={(event) => setInputChatValue(event.target.value)}
                 ref={inputChatRef}
               />
               <div className="add-chat-modal-buttons">
@@ -84,7 +95,12 @@ export function AddChatModal() {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="contained" onClick={handleChatAdd}>
+                  <Button
+                    // disabled={isInputChatEmpty}
+                    variant="contained"
+                    onClick={handleChatAdd}
+                    disabled={isInputChatEmpty}
+                  >
                     Add
                   </Button>
                 </div>

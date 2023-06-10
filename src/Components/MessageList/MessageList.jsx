@@ -10,6 +10,7 @@ import {
 } from "../../Store/Messages/actions";
 import { profileSelector } from "../../Store/Profile/selectors";
 import { v4 as uuidv4 } from "uuid";
+// import { format } from "date-fns";
 
 export function MessageList() {
   const { chatId } = useParams();
@@ -40,14 +41,21 @@ export function MessageList() {
   const sendMessage = () => {
     disptach(
       addMessageAction(chatId, {
-        id: uuidv4(),
         author: name,
         message: inputRef.current.value,
+        time: getTimeString(),
       })
     );
     inputRef.current.value = "";
     inputRef.current?.focus();
     console.log("MESSAGELIST::CHAT_ID", chatId);
+  };
+
+  const getTimeString = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
   };
 
   // With BOT Message
@@ -127,15 +135,19 @@ export function MessageList() {
               <div
                 className="author-text-font"
                 style={{
-                  color: msg.author !== "Alex" ? "#6658df" : null,
-                  display: msg.author !== "Alex" ? "none" : "block",
+                  color: msg.author !== "Alex" ? "#6658df" : "#0C8DD6",
+                  display: msg.author !== "Alex" ? "block" : null,
                   justifyContent:
                     msg.author !== "Alex" ? "flex-start" : "flex-end",
                 }}
               >
                 {msg.author}
               </div>
-              <div className="message-font">{msg.message}</div>
+
+              <div className="message-text-container">
+                <div className="message-font"> {msg.message}</div>
+                <div className="time-font">{msg.time}</div>
+              </div>
             </div>
           </div>
         ))}
