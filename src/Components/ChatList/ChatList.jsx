@@ -116,7 +116,7 @@ export function ChatList() {
       <div>
         <Link to="/facts">
           <Button>
-            <HelpIcon fontSize="large" style={{ color: "red" }} />
+            <HelpIcon fontSize="large" style={{ color: "orange" }} />
           </Button>
         </Link>
       </div>

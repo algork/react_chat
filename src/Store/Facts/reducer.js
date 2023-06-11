@@ -1,32 +1,38 @@
 import {
-  CHANGE_USER_NAME_ACTION,
-  TOGGLE_CHECKBOX_STATUS_ACTION,
-  TOGGLE_USER_NAME_ACTION,
+  GET_FACT_SUCCESS,
+  GET_FACT_REQUEST,
+  GET_FACT_ERROR,
 } from "./constants";
 
 const initialState = {
-  showName: true,
-  name: "Alex",
-  checkboxStatus: false,
+  factsUrl: undefined,
+  loading: true,
+  error: false,
 };
 
-export const profileReducer = (state = initialState, action) => {
+export const factsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOGGLE_USER_NAME_ACTION:
+    case GET_FACT_REQUEST: {
       return {
         ...state,
-        showName: !state.showName,
+        loading: true,
+        error: false,
       };
-    case TOGGLE_CHECKBOX_STATUS_ACTION:
+    }
+    case GET_FACT_SUCCESS: {
       return {
         ...state,
-        checkboxStatus: !state.checkboxStatus,
+        loading: false,
+        factsUrl: action.payload,
       };
-    case CHANGE_USER_NAME_ACTION:
+    }
+    case GET_FACT_ERROR: {
       return {
         ...state,
-        name: action.payload.name,
+        loading: false,
+        error: true,
       };
+    }
     default:
       return state;
   }

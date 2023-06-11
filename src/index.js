@@ -6,7 +6,7 @@ const myName = "Alexander";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App name={myName} />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <App name={myName} />
+  // </React.StrictMode>
 );
